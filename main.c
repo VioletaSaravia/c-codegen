@@ -73,13 +73,23 @@ struct Codegen {
     const char* codegenName;
     const char* newCode;
     const char*()* generate; // function?
+    const Variable* variables;
+}
+
+struct Variable {
+    const char* name;
+    const char* values; // should be **
 }
 
 int main() {
+    auto vars = (Variable*) malloc(sizeof(Variable));
+    *vars = {.name = "NUM", .values = "1"};
+    
     Codegen test = {
         fileName = "test/main.c";
         codegenName = "INTEGERS_TEST";
-        newCode = " int y = 420\n";
+        newCode = " int y$(NUM) = 420\n";
+        variables = vars;
     }
     
     CodegenRun(&test);
